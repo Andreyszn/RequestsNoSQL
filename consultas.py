@@ -1,7 +1,6 @@
 from pymongo import MongoClient
 from pprint import pprint
 import pandas as pd
-import pandas as pd
 
 cliente = MongoClient("mongodb://localhost:27017")
 db = cliente["VolleyballDB"]
@@ -43,49 +42,5 @@ equipos = db["teams"]
 #transferencias, guarda el nombre del jugador, el equipo de origen y el equipo de destino, y el año de la transferencia
 transferencias = db["transfers"]
 
-colecciones = {
-    "awards": db["awards"],
-    "body_builders": db["body_builders"],
-    "coaches": db["coaches"],
-    "countries": db["countries"],
-    "matches": db["matches"],
-    "physiotherapists": db["physiotherapists"],
-    "players": db["players"],
-    "presidents": db["presidents"],
-    "press_offices": db["press_offices"],
-    "sport_directors": db["sport_directors"],
-    "stadiums": db["stadiums"],
-    "statisticians": db["statisticians"],
-    "team_mangers": db["team_mangers"],
-    "teams": db["teams"],
-    "transfers": db["transfers"],
-}
 
-# Lista para almacenar todos los DataFrames
-dfs = []
 
-for nombre, coleccion in colecciones.items():
-    df = pd.DataFrame(coleccion.find())
-    df.drop(columns=['_id'], inplace=True, errors='ignore')
-    df["coleccion"] = nombre  # Añade columna para identificar de dónde viene
-    dfs.append(df)
-
-# Unir todos los DataFrames en uno solo
-dataframe_general = pd.concat(dfs, ignore_index=True)
-
-print("\nDataFrame combinado de todas las colecciones:")
-print(dataframe_general.head())
-print(f"\nNúmero de filas y columnas: {dataframe_general.shape}")
-print("\nInformación del DataFrame:")
-dataframe_general.info()
-
-# # DataFrame - estadios
-# dataframe = pd.DataFrame(estadios.find())
-
-# dataframe.drop(columns=['_id'], inplace=True, errors='ignore')
-
-# print("\nDataFrame de Pandas:")
-# print(dataframe.head())
-# print(f"\nNúmero de filas y columnas: {dataframe.shape}")
-# print("\nInformación del DataFrame:")
-# dataframe.info()

@@ -1,162 +1,169 @@
-# #update premio
-# premios.update_one(
-#   {"award_id": 99997},
-#   {"$set": {
-#     "player_id": "p1234",
-#     "award_name": "Updated Award",
-#     "league": "Updated League",
-#     "award_date": 2023
-#   }}
-# )
+from pymongo import MongoClient
+from pprint import pprint
+import pandas as pd
 
-# #update culturista
-# culturista.update_one(
-#   {"body_builder_id": 99999},
-#   {"$set": {
-#     "first_name": "Updated Name",
-#     "last_name": "Updated Last Name",
-#     "birth_date": "1/1/2000",
-#     "team_id": "t1234"
-#   }}
-# )
+cliente = MongoClient("mongodb://localhost:27017")
+db = cliente["VolleyballDB"]
 
-# #update entrenador
-# entrenadores.update_one(
-#   {"first_name": "Prueba", "last_name": "Korbeci"},
-#   {"$set": {
-#     "weight": 80,
-#     "height": 190,
-#     "birth_date": "8/15/1985",
-#     "team_id": "t5678"
-#   }}
-# )
+#update premio
+premios.update_one(
+  {"award_id": 99997},
+  {"$set": {
+    "player_id": "p1234",
+    "award_name": "Updated Award",
+    "league": "Updated League",
+    "award_date": 2023
+  }}
+)
 
-# #update pais
-# paises.update_one(
-#   {"country_code": "PRB"},
-#   {"$set": {
-#     "country_name": "Updated Country"
-#   }}
-# )
+#update culturista
+culturista.update_one(
+  {"body_builder_id": 99999},
+  {"$set": {
+    "first_name": "Updated Name",
+    "last_name": "Updated Last Name",
+    "birth_date": "1/1/2000",
+    "team_id": "t1234"
+  }}
+)
 
-# #update partido
-# partidas.update_one(
-#   {"match_id": 99999},
-#   {"$set": {
-#     "name": "Updated Match",
-#     "date": "4/1/2023",
-#     "league": "Updated League",
-#     "n_set_team1": 2,
-#     "n_set_team2": 3,
-#     "first_team_id": "t1234",
-#     "second_team_id": "t5678"
-#   }}
-# )
+#update entrenador
+entrenadores.update_one(
+  {"first_name": "Prueba", "last_name": "Korbeci"},
+  {"$set": {
+    "weight": 80,
+    "height": 190,
+    "birth_date": "8/15/1985",
+    "team_id": "t5678"
+  }}
+)
 
-# #update fisioterapista
-# fisioterapistas.update_one(
-#     {"first_name": "Deivis", "last_name": "LaFuente"},
-#     {"$set": {
-#         "birth_date": "1991-01-01",
-#         "team_id": "12345"
-#     }}
-# )
+#update pais
+paises.update_one(
+  {"country_code": "PRB"},
+  {"$set": {
+    "country_name": "Updated Country"
+  }}
+)
 
-# #update jugador
-# jugadores.update_one(
-#     {"player_id": 12345},
-#     {"$set": {
-#         "name": "Updated Player",
-#         "ranking": "Updated Ranking",
-#         "weight": 75,
-#         "position": "Outside Hitter",
-#         "height": 185,
-#         "country_code": "USA",
-#         "birth_date": "1996-06-20"
-#     }}
-# )
+#update partido
+partidas.update_one(
+  {"match_id": 99999},
+  {"$set": {
+    "name": "Updated Match",
+    "date": "4/1/2023",
+    "league": "Updated League",
+    "n_set_team1": 2,
+    "n_set_team2": 3,
+    "first_team_id": "t1234",
+    "second_team_id": "t5678"
+  }}
+)
 
-# #update presidente
-# presidentes.update_one(
-#     {"president_id": 12345},
-#     {"$set": {
-#       "first_name": "Charlie",
-#       "last_name": "Brown",
-#       "birth_date": "1970-07-30",
-#       "team_id": "67890"
-#       }}
-#     )
+#update fisioterapista
+fisioterapistas.update_one(
+    {"first_name": "Deivis", "last_name": "LaFuente"},
+    {"$set": {
+        "birth_date": "1991-01-01",
+        "team_id": "12345"
+    }}
+)
 
-# #update oficina de prensa
-# oficina_prensa.update_one(
-#     {"press_office_id": 12345},
-#     {"$set": {
-#         "first_name": "Updated First Name",
-#         "last_name": "Updated Last Name",
-#         "team_id": "12345"
-#     }}
-# )
+#update jugador
+jugadores.update_one(
+    {"player_id": 12345},
+    {"$set": {
+        "name": "Updated Player",
+        "ranking": "Updated Ranking",
+        "weight": 75,
+        "position": "Outside Hitter",
+        "height": 185,
+        "country_code": "USA",
+        "birth_date": "1996-06-20"
+    }}
+)
 
-# #update director deportivo
-# directores.update_one(
-#     {"sport_director_id": 12345},
-#     {"$set": {
-#         "first_name": "Updated First Name",
-#         "last_name": "Updated Last Name",
-#         "birth_date": "1986-04-15",
-#         "team_id": "12345"
-#     }}
-# )
+#update presidente
+presidentes.update_one(
+    {"president_id": 12345},
+    {"$set": {
+      "first_name": "Charlie",
+      "last_name": "Brown",
+      "birth_date": "1970-07-30",
+      "team_id": "67890"
+      }}
+    )
 
-# #update estadio
-# estadios.update_one(
-#     {"stadium_id": "a999"},
-#     {"$set": {
-#         "stadium_name": "Updated Stadium Name",
-#         "country_code": "CR",
-#         "town": "Updated Town",
-#         "opening_year": 2020,
-#         "capacity": 20000
-#     }}
-# )
+#update oficina de prensa
+oficina_prensa.update_one(
+    {"press_office_id": 12345},
+    {"$set": {
+        "first_name": "Updated First Name",
+        "last_name": "Updated Last Name",
+        "team_id": "12345"
+    }}
+)
 
-# #update estratega
-# estrategas.update_one(
-#     {"statisticians_id": 99999},
-#     {"$set": {
-#         "first_name": "Updated Kira",
-#         "last_name": "Updated Yagami",
-#         "birthdate": {
-#             "$date": "1997-04-04T00:00:00.000Z"
-#         },
-#         "team_id": "t12345"
-#     }}
-# )
+#update director deportivo
+directores.update_one(
+    {"sport_director_id": 12345},
+    {"$set": {
+        "first_name": "Updated First Name",
+        "last_name": "Updated Last Name",
+        "birth_date": "1986-04-15",
+        "team_id": "12345"
+    }}
+)
 
-# #update administrador
+#update estadio
+estadios.update_one(
+    {"stadium_id": "a999"},
+    {"$set": {
+        "stadium_name": "Updated Stadium Name",
+        "country_code": "CR",
+        "town": "Updated Town",
+        "opening_year": 2020,
+        "capacity": 20000
+    }}
+)
 
-# #update equipo
-# equipos.update_one(
-#     {"team_id": 999999},
-#     {"$set": {
-#         "team_name": "Updated Team Name",
-#         "country_code": "CR",
-#         "n_matches": 10,
-#         "n_tournaments": 5,
-#         "town": "Updated Town",
-#         "founded": 2000
-#     }}
-# )
+#update estratega
+estrategas.update_one(
+    {"statisticians_id": 99999},
+    {"$set": {
+        "first_name": "Updated Kira",
+        "last_name": "Updated Yagami",
+        "birthdate": {
+            "$date": "1997-04-04T00:00:00.000Z"
+        },
+        "team_id": "t12345"
+    }}
+)
 
-# #update transferencia
-# transferencias.update_one(
-#     {"transfer_id": 99999},
-#     {"$set": {
-#         "player_name": "Updated Player Name",
-#         "first_name": "Updated First Name",
-#         "last_name": "Updated Last Name",
-#         "date": 2023,
-#         "old_team_id": "t1234",
-#         "new_team_id": "t5678"
-#     }}
-# )
+#update administrador
+
+#update equipo
+equipos.update_one(
+    {"team_id": 999999},
+    {"$set": {
+        "team_name": "Updated Team Name",
+        "country_code": "CR",
+        "n_matches": 10,
+        "n_tournaments": 5,
+        "town": "Updated Town",
+        "founded": 2000
+    }}
+)
+
+#update transferencia
+transferencias.update_one(
+    {"transfer_id": 99999},
+    {"$set": {
+        "player_name": "Updated Player Name",
+        "first_name": "Updated First Name",
+        "last_name": "Updated Last Name",
+        "date": 2023,
+        "old_team_id": "t1234",
+        "new_team_id": "t5678"
+    }}
+)
