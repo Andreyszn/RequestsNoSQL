@@ -41,16 +41,13 @@ equipos = db["teams"]
 #transferencias, guarda el nombre del jugador, el equipo de origen y el equipo de destino, y el año de la transferencia
 transferencias = db["transfers"]
 
-cursor = estadios.find({})
-data = list(cursor)
+# DataFrame - estadios
+dataframe = pd.DataFrame(estadios.find())
 
-df = pd.DataFrame(data)
-
-if '_id' in df.columns:
-    df = df.drop(columns=['_id'])
+dataframe.drop(columns=['_id'], inplace=True, errors='ignore')
 
 print("\nDataFrame de Pandas:")
-print(df.head())
-print(f"\nNúmero de filas y columnas: {df.shape}")
+print(dataframe.head())
+print(f"\nNúmero de filas y columnas: {dataframe.shape}")
 print("\nInformación del DataFrame:")
-df.info()
+dataframe.info()
