@@ -44,183 +44,183 @@ equipos = db["teams"]
 transferencias = db["transfers"]
 
 #1. Estadio con mayor capacidad
-mayor_estadio = list(estadios.aggregate([
-    {
-        "$sort": {"capacity": -1}
-    },
-    {
-        "$limit": 1
-    },
-    {
-        "$project": {
-            "_id": 0,
-            "nombre_estadio": "$name",
-            "capacidad": "$capacity"
-        }
-    }
-]))
-pprint("El estadio con mayor capacidad es: ")
-pprint(mayor_estadio)
+# mayor_estadio = list(estadios.aggregate([
+#     {
+#         "$sort": {"capacity": -1}
+#     },
+#     {
+#         "$limit": 1
+#     },
+#     {
+#         "$project": {
+#             "_id": 0,
+#             "nombre_estadio": "$name",
+#             "capacidad": "$capacity"
+#         }
+#     }
+# ]))
+# pprint("El estadio con mayor capacidad es: ")
+# pprint(mayor_estadio)
 
-#2. total de equipos por pais
-equipos_por_pais = equipos.aggregate([
-    {"$group": {"_id": "$country_code", "total_equipos": {"$sum": 1}}},
-    {"$sort": {"_id": 1}}])
-print("\nTotal de equipos por país:")
-pprint(list(equipos_por_pais))
+# #2. total de equipos por pais
+# equipos_por_pais = equipos.aggregate([
+#     {"$group": {"_id": "$country_code", "total_equipos": {"$sum": 1}}},
+#     {"$sort": {"_id": 1}}])
+# print("\nTotal de equipos por país:")
+# pprint(list(equipos_por_pais))
 
-#3. mostrar todos los partidos ganados por el equipo VfB Friedrichshafen (team_id: "t1960")
-partidos_vfb = partidas.aggregate([
-    {"$match": {"$or": [{"first_team_id": "t1960"}, {"second_team_id": "t1960"}]}},
-    {"$addFields": {
-        "vfb_friedrichshafen_won": {
-            "$cond": {
-                "if": { "$eq": ["$first_team_id", "t1960"] },
-                "then": { "$gt": ["$n_set_team1", "$n_set_team2"] }, 
-                "else": { "$gt": ["$n_set_team2", "$n_set_team1"] }
-            }
-        }
-    }},
-    {"$match": {"vfb_friedrichshafen_won": True}},
-    {"$project": {
-        "_id": 0,
-        "date": 1,
-        "league": 1,
-        "first_team_id": 1,
-        "second_team_id": 1,
-        "n_set_team1": 1,
-        "n_set_team2": 1
-    }},
-    {"$sort": {"date": -1}}])
-print("\nPartidos ganados por el equipo VfB Friedrichshafen:")
-pprint(list(partidos_vfb))
+# #3. mostrar todos los partidos ganados por el equipo VfB Friedrichshafen (team_id: "t1960")
+# partidos_vfb = partidas.aggregate([
+#     {"$match": {"$or": [{"first_team_id": "t1960"}, {"second_team_id": "t1960"}]}},
+#     {"$addFields": {
+#         "vfb_friedrichshafen_won": {
+#             "$cond": {
+#                 "if": { "$eq": ["$first_team_id", "t1960"] },
+#                 "then": { "$gt": ["$n_set_team1", "$n_set_team2"] }, 
+#                 "else": { "$gt": ["$n_set_team2", "$n_set_team1"] }
+#             }
+#         }
+#     }},
+#     {"$match": {"vfb_friedrichshafen_won": True}},
+#     {"$project": {
+#         "_id": 0,
+#         "date": 1,
+#         "league": 1,
+#         "first_team_id": 1,
+#         "second_team_id": 1,
+#         "n_set_team1": 1,
+#         "n_set_team2": 1
+#     }},
+#     {"$sort": {"date": -1}}])
+# print("\nPartidos ganados por el equipo VfB Friedrichshafen:")
+# pprint(list(partidos_vfb))
 
-#4. Cual ha sido el equipo del que se han ido más jugadores y cuantos han sido
-pprint(list(equipos.aggregate([
-    {
-        "$lookup": {
-            "from": "transfers",
-            "localField": "team_id",
-            "foreignField": "old_team_id",
-            "as": "transfers"
-        }
-    },
-    {
-        "$project": {
-            "team_name": 1,
-            "n_transfers": {"$size": "$transfers"}
-        }
-    },
-    {
-        "$sort": {"n_transfers": -1}
-    },
-    {
-        "$limit": 1
-    }
-])))
+# #4. Cual ha sido el equipo del que se han ido más jugadores y cuantos han sido
+# pprint(list(equipos.aggregate([
+#     {
+#         "$lookup": {
+#             "from": "transfers",
+#             "localField": "team_id",
+#             "foreignField": "old_team_id",
+#             "as": "transfers"
+#         }
+#     },
+#     {
+#         "$project": {
+#             "team_name": 1,
+#             "n_transfers": {"$size": "$transfers"}
+#         }
+#     },
+#     {
+#         "$sort": {"n_transfers": -1}
+#     },
+#     {
+#         "$limit": 1
+#     }
+# ])))
 
-#5. Cual es es el pais con más jugadores en el ranking 2000
-topRank = list(jugadores.aggregate([
-    {
-        "$match": {
-            "ranking": {"$lte": 2000}
-        }
-    },
-    {
-        "$group": {
-            "_id": "$country_code",
-            "count": {"$sum": 1}
-        }
-    },
-    {
-        "$sort": {"count": -1}
-    },
-    {
-        "$limit": 1
-    },
-    {
-        "$lookup": {
-            "from": "countries",
-            "localField": "_id",
-            "foreignField": "country_code",
-            "as": "country_info"
-        }
-    },
-    {
-        "$unwind": "$country_info"
-    },
-    {
-        "$project": {
-            "country_name": "$country_info.name",
-            "count" : 1
-        }
-    }
-]))
-pprint("El país con más jugadores en el ranking 2000 es ")
-pprint(topRank)
+# #5. Cual es es el pais con más jugadores en el ranking 2000
+# topRank = list(jugadores.aggregate([
+#     {
+#         "$match": {
+#             "ranking": {"$lte": 2000}
+#         }
+#     },
+#     {
+#         "$group": {
+#             "_id": "$country_code",
+#             "count": {"$sum": 1}
+#         }
+#     },
+#     {
+#         "$sort": {"count": -1}
+#     },
+#     {
+#         "$limit": 1
+#     },
+#     {
+#         "$lookup": {
+#             "from": "countries",
+#             "localField": "_id",
+#             "foreignField": "country_code",
+#             "as": "country_info"
+#         }
+#     },
+#     {
+#         "$unwind": "$country_info"
+#     },
+#     {
+#         "$project": {
+#             "country_name": "$country_info.name",
+#             "count" : 1
+#         }
+#     }
+# ]))
+# pprint("El país con más jugadores en el ranking 2000 es ")
+# pprint(topRank)
 
-#6. Obteniene el país cuyos jugadores han ganado más premios y cuántos premios tiene ese país
-result = list(jugadores.aggregate([
-    {
-        "$lookup": {
-            "from": "awards",
-            "localField": "player_id",
-            "foreignField": "player_id",
-            "as": "awards"
-        }
-    },
-    {
-        "$group": {
-            "_id": "$country_code",
-            "total_awards": {"$sum": {"$size": "$awards"}}
-        }
-    },
-    {
-        "$sort": {"total_awards": -1}
-    },
-    {
-        "$limit": 1
-    },
-    {
-        "$lookup": {
-            "from": "countries",
-            "localField": "_id",
-            "foreignField": "country_code",
-            "as": "country_info"
-        }
-    },
-    {
-        "$unwind": "$country_info"
-    },
-    {
-        "$project": {
-            "country_name": "$country_info.name",
-            "total_awards": 1
-        }
-    }
-]))
-pprint("El paise con más premios es ")
-pprint(result)
+# #6. Obteniene el país cuyos jugadores han ganado más premios y cuántos premios tiene ese país
+# result = list(jugadores.aggregate([
+#     {
+#         "$lookup": {
+#             "from": "awards",
+#             "localField": "player_id",
+#             "foreignField": "player_id",
+#             "as": "awards"
+#         }
+#     },
+#     {
+#         "$group": {
+#             "_id": "$country_code",
+#             "total_awards": {"$sum": {"$size": "$awards"}}
+#         }
+#     },
+#     {
+#         "$sort": {"total_awards": -1}
+#     },
+#     {
+#         "$limit": 1
+#     },
+#     {
+#         "$lookup": {
+#             "from": "countries",
+#             "localField": "_id",
+#             "foreignField": "country_code",
+#             "as": "country_info"
+#         }
+#     },
+#     {
+#         "$unwind": "$country_info"
+#     },
+#     {
+#         "$project": {
+#             "country_name": "$country_info.name",
+#             "total_awards": 1
+#         }
+#     }
+# ]))
+# pprint("El paise con más premios es ")
+# pprint(result)
 
 
-#Visualizaciones
+# #Visualizaciones
 
-print("\nGráfico de barras: Número de transferencias por año")
-canciones_por_año = transferencias.aggregate([{"$group": {"_id": "$date", "cantidad": {"$sum": 1}}}, {"$sort": {"_id": 1}}])
-años = [] 
-cantidades = []
-for doc in canciones_por_año:
-    años.append(doc["_id"])
-    cantidades.append(doc["cantidad"])
-plt.bar(años, cantidades)
-plt.xlabel("Año")
-plt.ylabel("Número de transferencias")
-plt.title("Número de transferencias por Año")
-plt.xticks(rotation=45)
-plt.tight_layout()
-plt.show()
+# print("\nGráfico de barras: Número de transferencias por año")
+# canciones_por_año = transferencias.aggregate([{"$group": {"_id": "$date", "cantidad": {"$sum": 1}}}, {"$sort": {"_id": 1}}])
+# años = [] 
+# cantidades = []
+# for doc in canciones_por_año:
+#     años.append(doc["_id"])
+#     cantidades.append(doc["cantidad"])
+# plt.bar(años, cantidades)
+# plt.xlabel("Año")
+# plt.ylabel("Número de transferencias")
+# plt.title("Número de transferencias por Año")
+# plt.xticks(rotation=45)
+# plt.tight_layout()
+# plt.show()
 
-equipos_por_pais = equipos.aggregate([{"$unwind": "$country_code"}, {"$group": {"_id": "$country_code", "total_equipos": {"$sum": 1}}}, {"$sort": {"total_equipos": -1}},{"$limit": 5}])
+equipos_por_pais = equipos.aggregate([{"$unwind": "$country_code"}, {"$group": {"_id": "$country_code", "total_equipos": {"$sum": 1}}}, {"$sort": {"total_equipos": -1}},{"$limit": 10}])
 equipo = []
 paises = []
 for doc in equipos_por_pais:
