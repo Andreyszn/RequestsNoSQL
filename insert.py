@@ -63,6 +63,7 @@ culturista.insert_one(
   "team_id": "t1674"
   })
 
+
 #insert entrenador
 entrenadores.insert_one(
   {
@@ -138,7 +139,7 @@ directores.insert_one({
     "last_name": "Johnson",
     "birthdate": "1985-03-20",
     "team_id": "67890"
-}) (editado)
+})
 
 
 #insert estadio
