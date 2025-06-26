@@ -42,5 +42,156 @@ equipos = db["teams"]
 #transferencias, guarda el nombre del jugador, el equipo de origen y el equipo de destino, y el año de la transferencia
 transferencias = db["transfers"]
 
+# Estadio con mayor capacidad
+mayor_estadio = list(estadios.aggregate([
+    {
+        "$sort": {"capacity": -1}
+    },
+    {
+        "$limit": 1
+    },
+    {
+        "$project": {
+            "_id": 0,
+            "nombre_estadio": "$name",
+            "capacidad": "$capacity"
+        }
+    }
+]))
+
+pprint("El estadio con mayor capacidad es: ")
+pprint(mayor_estadio)
+
+# #Cual ha sido el equipo del que se han ido más jugadores y cuantos han sido
+# pprint(list(equipos.aggregate([
+#     {
+#         "$lookup": {
+#             "from": "transfers",
+#             "localField": "team_id",
+#             "foreignField": "old_team_id",
+#             "as": "transfers"
+#         }
+#     },
+#     {
+#         "$project": {
+#             "team_name": 1,
+#             "n_transfers": {"$size": "$transfers"}
+#         }
+#     },
+#     {
+#         "$sort": {"n_transfers": -1}
+#     },
+#     {
+#         "$limit": 1
+#     }
+# ])))
+
+# #Cual ha sido el equipo del que se han ido más jugadores y cuantos han sido
+# pprint(list(equipos.aggregate([
+#     {
+#         "$lookup": {
+#             "from": "transfers",
+#             "localField": "team_id",
+#             "foreignField": "old_team_id",
+#             "as": "transfers"
+#         }
+#     },
+#     {
+#         "$project": {
+#             "team_name": 1,
+#             "n_transfers": {"$size": "$transfers"}
+#         }
+#     },
+#     {
+#         "$sort": {"n_transfers": -1}
+#     },
+#     {
+#         "$limit": 1
+#     }
+# ])))
+
+# #Cual es es el pais con más jugadores en el ranking 2000
+# topRank = list(jugadores.aggregate([
+#     {
+#         "$match": {
+#             "ranking": {"$lte": 2000}
+#         }
+#     },
+#     {
+#         "$group": {
+#             "_id": "$country_code",
+#             "count": {"$sum": 1}
+#         }
+#     },
+#     {
+#         "$sort": {"count": -1}
+#     },
+#     {
+#         "$limit": 1
+#     },
+#     {
+#         "$lookup": {
+#             "from": "countries",
+#             "localField": "_id",
+#             "foreignField": "country_code",
+#             "as": "country_info"
+#         }
+#     },
+#     {
+#         "$unwind": "$country_info"
+#     },
+#     {
+#         "$project": {
+#             "country_name": "$country_info.name",
+#             "count" : 1
+#         }
+#     }
+# ]))
+
+# pprint("El país con más jugadores en el ranking 1000 es ")
+# pprint(topRank)
+
+# #Obtener el país cuyos jugadores han ganado más premios y cuántos premios tiene ese país
+# result = list(jugadores.aggregate([
+#     {
+#         "$lookup": {
+#             "from": "awards",
+#             "localField": "player_id",
+#             "foreignField": "player_id",
+#             "as": "awards"
+#         }
+#     },
+#     {
+#         "$group": {
+#             "_id": "$country_code",
+#             "total_awards": {"$sum": {"$size": "$awards"}}
+#         }
+#     },
+#     {
+#         "$sort": {"total_awards": -1}
+#     },
+#     {
+#         "$limit": 1
+#     },
+#     {
+#         "$lookup": {
+#             "from": "countries",
+#             "localField": "_id",
+#             "foreignField": "country_code",
+#             "as": "country_info"
+#         }
+#     },
+#     {
+#         "$unwind": "$country_info"
+#     },
+#     {
+#         "$project": {
+#             "country_name": "$country_info.name",
+#             "total_awards": 1
+#         }
+#     }
+# ]))
+# pprint("El paise con más premios es ")
+# pprint(result)
 
 
