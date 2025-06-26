@@ -205,6 +205,7 @@ pprint(result)
 
 #Visualizaciones
 
+#1
 print("\nGráfico de barras: Número de transferencias por año")
 canciones_por_año = transferencias.aggregate([{"$group": {"_id": "$date", "cantidad": {"$sum": 1}}}, {"$sort": {"_id": 1}}])
 años = [] 
@@ -220,6 +221,7 @@ plt.xticks(rotation=45)
 plt.tight_layout()
 plt.show()
 
+#2
 equipos_por_pais = equipos.aggregate([{"$unwind": "$country_code"}, {"$group": {"_id": "$country_code", "total_equipos": {"$sum": 1}}}, {"$sort": {"total_equipos": -1}},{"$limit": 5}])
 equipo = []
 paises = []
@@ -231,6 +233,7 @@ plt.axis('equal')
 plt.title("Distribución de equipos por país")
 plt.show()
 
+#3
 jugadores_por_posicion = jugadores.aggregate([{"$group": {"_id": "$position", "cantidad": {"$sum": 1}}},{"$sort": {"cantidad": -1}}])
 posiciones = []
 cantidades = []
