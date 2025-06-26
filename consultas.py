@@ -230,3 +230,16 @@ plt.pie(equipo, labels=paises, autopct='%1.1f%%', startangle=140)
 plt.axis('equal') 
 plt.title("Distribución de equipos por país")
 plt.show()
+
+jugadores_por_posicion = jugadores.aggregate([{"$group": {"_id": "$position", "cantidad": {"$sum": 1}}},{"$sort": {"cantidad": -1}}])
+posiciones = []
+cantidades = []
+for doc in jugadores_por_posicion:
+    posiciones.append(doc["_id"])
+    cantidades.append(doc["cantidad"])
+plt.pie(cantidades, labels=posiciones, autopct='%1.1f%%', startangle=140)
+plt.axis('equal')
+plt.title("Distribución de jugadores por posición")
+plt.show()
+
+
