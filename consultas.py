@@ -54,7 +54,7 @@ mayor_estadio = list(estadios.aggregate([
     {
         "$project": {
             "_id": 0,
-            "nombre_estadio": "$name",
+            "nombre_estadio": "$stadium_name",
             "capacidad": "$capacity"
         }
     }
@@ -207,10 +207,10 @@ pprint(result)
 
 #1
 print("\nGráfico de barras: Número de transferencias por año")
-canciones_por_año = transferencias.aggregate([{"$group": {"_id": "$date", "cantidad": {"$sum": 1}}}, {"$sort": {"_id": 1}}])
+transferencias_por_año = transferencias.aggregate([{"$group": {"_id": "$date", "cantidad": {"$sum": 1}}}, {"$sort": {"_id": 1}}])
 años = [] 
 cantidades = []
-for doc in canciones_por_año:
+for doc in transferencias_por_año:
     años.append(doc["_id"])
     cantidades.append(doc["cantidad"])
 plt.bar(años, cantidades)
@@ -245,4 +245,5 @@ plt.axis('equal')
 plt.title("Distribución de jugadores por posición")
 plt.show()
 
-
+mensaje_final = "Dios te ama bro"
+print(mensaje_final)
