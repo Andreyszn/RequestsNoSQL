@@ -219,3 +219,14 @@ plt.title("Número de transferencias por Año")
 plt.xticks(rotation=45)
 plt.tight_layout()
 plt.show()
+
+equipos_por_pais = equipos.aggregate([{"$unwind": "$country_code"}, {"$group": {"_id": "$country_code", "total_equipos": {"$sum": 1}}}, {"$sort": {"total_equipos": -1}},{"$limit": 5}])
+equipo = []
+paises = []
+for doc in equipos_por_pais:
+    equipo.append(doc["total_equipos"])
+    paises.append(doc["_id"])
+plt.pie(equipo, labels=paises, autopct='%1.1f%%', startangle=140)
+plt.axis('equal') 
+plt.title("Distribución de equipos por país")
+plt.show()
