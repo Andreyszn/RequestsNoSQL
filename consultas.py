@@ -1,9 +1,10 @@
+from matplotlib import pyplot as plt
 from pymongo import MongoClient
 from pprint import pprint
 import pandas as pd
 
 cliente = MongoClient("mongodb://localhost:27017")
-db = cliente["VolleyballDB"]
+db = cliente["VolleyBallDB"]
 
 #premios están ligados a un jugador cuentan con titulo, de que liga son y cuando se entregaron
 premios = db["awards"]
@@ -155,10 +156,10 @@ topRank = list(jugadores.aggregate([
         }
     }
 ]))
-pprint("El país con más jugadores en el ranking 1000 es ")
+pprint("El país con más jugadores en el ranking 2000 es ")
 pprint(topRank)
 
-#6. Obtener el país cuyos jugadores han ganado más premios y cuántos premios tiene ese país
+#6. Obteniene el país cuyos jugadores han ganado más premios y cuántos premios tiene ese país
 result = list(jugadores.aggregate([
     {
         "$lookup": {
@@ -200,3 +201,21 @@ result = list(jugadores.aggregate([
 ]))
 pprint("El paise con más premios es ")
 pprint(result)
+
+
+#Visualizaciones
+
+print("\nGráfico de barras: Número de transferencias por año")
+canciones_por_año = transferencias.aggregate([{"$group": {"_id": "$date", "cantidad": {"$sum": 1}}}, {"$sort": {"_id": 1}}])
+años = [] 
+cantidades = []
+for doc in canciones_por_año:
+    años.append(doc["_id"])
+    cantidades.append(doc["cantidad"])
+plt.bar(años, cantidades)
+plt.xlabel("Año")
+plt.ylabel("Número de transferencias")
+plt.title("Número de transferencias por Año")
+plt.xticks(rotation=45)
+plt.tight_layout()
+plt.show()
