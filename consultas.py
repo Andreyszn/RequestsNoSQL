@@ -4,7 +4,7 @@ from pprint import pprint
 import pandas as pd
 
 cliente = MongoClient("mongodb://localhost:27017")
-db = cliente["VolleyBallDB"]
+db = cliente["VolleyballDB"]
 
 #premios están ligados a un jugador cuentan con titulo, de que liga son y cuando se entregaron
 premios = db["awards"]
